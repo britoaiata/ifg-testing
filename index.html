@@ -2,41 +2,10 @@
 <html>
 
 <head>
-    <title>Cruise API - Step Up</title>
-
+    <title>Cruise API - Collect</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
         .hide {
             display: none;
-        }
-
-        #stepUpView {
-            width: 100%;
-            height: 100%
-        }
-
-        #stepUpView iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #loadingImage {
-            height: 30px;
-            width: 30px;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transform: -webkit-translate(-50%, -50%);
-            transform: -moz-translate(-50%, -50%);
-            transform: -ms-translate(-50%, -50%);
         }
 
         .outOfview {
@@ -49,71 +18,62 @@
 
 <body>
 
-    <div id="stepUpView"></div>
-
-    <div class="hide">
-        <input id="acsUrl" name="acsUrl" value="https://cas.client.cardinaltrusted.com/merchantacs/threeds/v2/creq" type="hidden"/>
-        <input id="payload" name="payload" value="eyJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMi4wIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiI5ZmI4ZTYzMS02MGNjLTRlNDAtOGNjZi03ZGQyMGZmN2NmYmMiLCJhY3NUcmFuc0lEIjoiOTk0MmJmM2UtMjU2OC00OGU5LTgxNGUtZGNlMjE4N2RlMWQzIiwiY2hhbGxlbmdlV2luZG93U2l6ZSI6IjAyIn0" type="hidden"/>
-        <input id="mcsId" name="mcsId" value="MF9hZjExZDhhMi1hOGNlLTQ3NjctOTMxZi1kODE4ZTYwNjc2N2E" type="hidden"/>
-        <input id="termUrl" name="termUrl" value="https://cas.client.cardinaltrusted.com/centinelapi/V1/TermURL/Overlay/CCA" type="hidden"/>
-        <input id="threeDSVersion" name="threeDSVersion" value="2" type="hidden"/>
-        <input id="baseUrl" name="baseUrl" value="https://cas.client.cardinaltrusted.com/centinelapi" type="hidden"/>
+    <div class="hide outOfview">
+        <input id='binValue' type="hidden" value="400000000">
+        <input id='binPreloadEnabled' type="hidden" value="true">
+        <input id='dfUrlFullValue' type="hidden" value="https://cas.client.cardinaltrusted.com/mdcweb/V2/Browser/Render?referenceId=28e036f5-ee32-4a65-8afd-637112600c08&amp;orgUnitId=5e02441190d741214c11a686&amp;threatmetrix=true&amp;tmEventType=PAYMENT&amp;geolocation=false&amp;alias=Default">
+        <input id='cardTypeValue' type="hidden" value="null">
         <input id="orgUnitId" name="orgUnitId" value="5e02441190d741214c11a686" type="hidden"/>
-        <input id="transactionId" name="transactionId" value="9i7Xk1LFaR8zr57yEQC2" type="hidden"/>
-        <input id="isPostMessageEventsEnabled" name="isPostMessageEventsEnabled" value="false" type="hidden"/>
-        <input id="merchantData" name="merchantData" value="8058ce3f-b690-4360-9326-94e69597fa51" type="hidden"/>
-        <input id="usePostMessageCompletion" name="usePostMessageCompletion" value="false" type="hidden"/>
-        <input id="useMetaTag" name="useMetaTag" value="true" type="hidden"/>
+        <input id='redirectEnabled' type="hidden" value="true">
+        <input id='referenceId' type="hidden" value="28e036f5-ee32-4a65-8afd-637112600c08">
+        <input id='responseVersion' type="hidden" value="2">
+        <input id='iframeSandboxEnabled' type="hidden" value="false">
+        <input id='iframeAllowEnabled' type="hidden" value="false">
 
-    </div>
 
-    <div class="hide">
-        <form id="redirect" method="POST"
-            action="https://cas.client.cardinaltrusted.com/centinelapi/V1/Cruise/TermRedirection">
-            <input type="hidden" name="McsId" id="redirect-mcsId" value="0_af11d8a2-a8ce-4767-931f-d818e606767a"/>
-            <input type="hidden" name="CardinalJWT" id="CardinalJWT"/>
-            <input type="hidden" name="Error" id="Error"/>
+        <form id="redirectionForm" action="https://cas.client.cardinaltrusted.com/centinelapi/V2/Cruise/CollectRedirect"
+            method="post" data-responseVersion="2">
+            <input id="mcsId" type="hidden" name="McsId" value="0_2b93d7af-2e29-435c-b8b5-233c4d1527be">
+            <input id="state" type="hidden" name="DataSources" value="{}">
+            <input id="actionCode" type="hidden" name="ActionCode" value="">
+            <input id="error" type="hidden" name="Error" value=""/>
         </form>
+
     </div>
 
-    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/vendors.16d8349124d3c8af53cd.js">
+    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/vendors.8f8e0e81c35ebb35bcfc.js">
     </script>
-    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/stepUp.bd329110d6f1b71da854.js"></script>
+    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/collect.03e05f93e567b62f89ff.js">
+    </script>
     <script>
         window.onload = function () {
         try {
             if (window.CruiseAPI !== undefined) {
-                var configuration = {
-                    acsUrl: document.getElementById('acsUrl').value,
-                    baseUrl: document.getElementById('baseUrl').value,
-                    encodedMcsId: document.getElementById('mcsId').value,
-                    mcsId: document.getElementById('redirect-mcsId').value,
+                CruiseAPI.collect.run({
+                    bin: document.getElementById('binValue').value,
+                    binPreloadEnabled: document.getElementById('binPreloadEnabled').value,
+                    cardType: document.getElementById('cardTypeValue').value,
+                    dfUrl: document.getElementById('dfUrlFullValue').value,
+                    isRedirectEnabled: document.getElementById('redirectEnabled').value,
+                    mcsId: document.getElementById('mcsId').value,
                     orgUnitId: document.getElementById('orgUnitId').value,
-                    payload: document.getElementById('payload').value,                    
-                    termUrl: document.getElementById('termUrl').value,
-                    threeDSVersion: document.getElementById('threeDSVersion').value,
-                    transactionId: document.getElementById('transactionId').value,
-                    isPostMessageEventsEnabled: document.getElementById('isPostMessageEventsEnabled').value,
-                    merchantData: document.getElementById('merchantData').value,
-                    usePostMessageCompletion: document.getElementById('usePostMessageCompletion').value,
-                    useMetaTag: document.getElementById('useMetaTag').value
-
-                };
-
-                CruiseAPI.stepUp.run(configuration)
+                    referenceId: document.getElementById('referenceId').value,
+                    responseVersion: parseInt(document.getElementById('responseVersion').value,10),
+                    iframeSandboxEnabled: document.getElementById('iframeSandboxEnabled').value,
+                    iframeAllowEnabled: document.getElementById('iframeAllowEnabled').value
+                });
             } else {
-                console.error('Global not found, unable to complete step up');
-                document.getElementById("Error").value = "JS Global not found";
-                document.getElementById("redirect").submit();
+                console.error('Global not found, unable to complete collection');
+                document.getElementById("state").value = false;
+                document.getElementById("redirectionForm").submit();
             }
-        }catch(error) {            
-            if(window.CruiseAPI !== undefined){
-                CruiseAPI.stepUp.handleError(error.message);
-            } else {
-                console.error(error);
+        } catch (error) {
+            console.error(error);
+            if (window.CruiseAPI !== undefined) {
+                CruiseAPI.collect.handleError();
             }
         }
-    }
+    };
     </script>
 </body>
 
