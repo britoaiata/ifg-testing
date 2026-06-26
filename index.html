@@ -1,4 +1,83 @@
-<!DOCTYPE html>
+A<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cruise API - Collect</title>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .outOfview {
+            position: absolute;
+            left: -2000px;
+            top: -2000px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hide outOfview">
+        <input id='binValue' type="hidden" value="400000000">
+        <input id='binPreloadEnabled' type="hidden" value="true">
+        <input id='dfUrlFullValue' type="hidden" value="https://cas.client.cardinaltrusted.com/mdcweb/V2/Browser/Render?referenceId=908c7237-43d1-43c6-92b7-b262d8b01411&amp;orgUnitId=5e02441190d741214c11a686&amp;threatmetrix=true&amp;tmEventType=PAYMENT&amp;geolocation=false&amp;alias=Default">
+        <input id='cardTypeValue' type="hidden" value="null">
+        <input id="orgUnitId" name="orgUnitId" value="5e02441190d741214c11a686" type="hidden"/>
+        <input id='redirectEnabled' type="hidden" value="false">
+        <input id='referenceId' type="hidden" value="908c7237-43d1-43c6-92b7-b262d8b01411">
+        <input id='responseVersion' type="hidden" value="2">
+        <input id='iframeSandboxEnabled' type="hidden" value="false">
+        <input id='iframeAllowEnabled' type="hidden" value="false">
+
+
+        <form id="redirectionForm" action="https://cas.client.cardinaltrusted.com/centinelapi/V2/Cruise/CollectRedirect"
+            method="post" data-responseVersion="2">
+            <input id="mcsId" type="hidden" name="McsId" value="0_eee701d2-0fdb-4460-8b77-bcdd1674cf4d">
+            <input id="state" type="hidden" name="DataSources" value="{}">
+            <input id="actionCode" type="hidden" name="ActionCode" value="">
+            <input id="error" type="hidden" name="Error" value=""/>
+        </form>
+
+    </div>
+
+    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/vendors.8f8e0e81c35ebb35bcfc.js">
+    </script>
+    <script src="https://cas.client.cardinaltrusted.com/centinelapi/javascript/collect.03e05f93e567b62f89ff.js">
+    </script>
+    <script>
+        window.onload = function () {
+        try {
+            if (window.CruiseAPI !== undefined) {
+                CruiseAPI.collect.run({
+                    bin: document.getElementById('binValue').value,
+                    binPreloadEnabled: document.getElementById('binPreloadEnabled').value,
+                    cardType: document.getElementById('cardTypeValue').value,
+                    dfUrl: document.getElementById('dfUrlFullValue').value,
+                    isRedirectEnabled: document.getElementById('redirectEnabled').value,
+                    mcsId: document.getElementById('mcsId').value,
+                    orgUnitId: document.getElementById('orgUnitId').value,
+                    referenceId: document.getElementById('referenceId').value,
+                    responseVersion: parseInt(document.getElementById('responseVersion').value,10),
+                    iframeSandboxEnabled: document.getElementById('iframeSandboxEnabled').value,
+                    iframeAllowEnabled: document.getElementById('iframeAllowEnabled').value
+                });
+            } else {
+                console.error('Global not found, unable to complete collection');
+                document.getElementById("state").value = false;
+                document.getElementById("redirectionForm").submit();
+            }
+        } catch (error) {
+            console.error(error);
+            if (window.CruiseAPI !== undefined) {
+                CruiseAPI.collect.handleError();
+            }
+        }
+    };
+    </script>
+</body>
+
+</html><!DOCTYPE html>
 <html>
 
 <head>
